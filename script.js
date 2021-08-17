@@ -1,33 +1,48 @@
+function camposValidos() {
+    const nome = document.getElementById("nome").value
+    const altura = parseFloat(document.getElementById("altura").value) 
+    const peso = parseFloat(document.getElementById("peso").value)
 
-function calcularImc() {
+    return (nome.trim() !== '' && !isNaN(altura) && !isNaN(peso))
+}
+
+function calcularImc(peso, altura) {
+    return (peso / (altura * altura)).toFixed(1)
+}
+
+function classificarImc(imc) {
+    let classificacao = ""
+
+    if (imc < 18.5) {
+        classificacao = "abaixo do peso."
+    } else if (imc < 25) {
+        classificacao = "com peso ideal. Parabéns!"
+    } else if (imc < 30) {
+        classificacao = "levemente acima do peso."
+    } else if (imc < 35) {
+        classificacao = "com obesidade grau I."
+    } else if (imc < 40) {
+        classificacao = "com obesidade grau II."
+    } else {
+        classificacao = "com obesidade grau III."
+    }
+
+    return classificacao
+}
+
+function exibirImc() {
 
     const nome = document.getElementById("nome").value
     const altura = parseFloat(document.getElementById("altura").value) 
     const peso = parseFloat(document.getElementById("peso").value) 
     const resultado = document.getElementById("resultado")
 
-    if (nome.trim() !== '' && !isNaN(altura) && !isNaN(peso)) {
+    if (camposValidos()) {
         
-        const imc = (peso / (altura * altura)).toFixed(1)
+        const imc = calcularImc(peso, altura)
+        const classificacao = classificarImc(imc)
 
-        let classificação = ""
-
-        if (imc < 18.5) {
-            classificação = "abaixo do peso."
-        } else if (imc <25) {
-            classificação = "com peso ideal. Parabéns!"
-        } else if (imc < 30) {
-            classificação = "levemente acima do peso."
-        } else if (imc < 35) {
-            classificação = "com obesidade grau I."
-        } else if (imc < 40) {
-            classificação = "com obesidade grau II."
-        } else {
-            classificação = "com obesidade grau III."
-        }
-
-        resultado.textContent = `${nome}, seu IMC é ${imc} e você está ${classificação}` 
-
+        resultado.textContent = `${nome}, seu IMC é ${imc} e você está ${classificacao}` 
     } else {
         resultado.textContent = "Preencha todos os campos!"
     }
@@ -36,4 +51,4 @@ function calcularImc() {
 }
 
 document.getElementById("buttonCalcular")
-    .addEventListener("click", calcularImc)
+    .addEventListener("click", exibirImc)
